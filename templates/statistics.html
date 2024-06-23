@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Statistics</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>Statistics</h1>
+
+    <h2>Descriptive Statistics</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Mean</h3>
+            <ul class="list-group">
+                {% for key, value in stats.mean.items() %}
+                <li class="list-group-item"><strong>{{ key }}:</strong> {{ value }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h3>Median</h3>
+            <ul class="list-group">
+                {% for key, value in stats.median.items() %}
+                <li class="list-group-item"><strong>{{ key }}:</strong> {{ value }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h3>Mode</h3>
+            <ul class="list-group">
+                {% for key, value in stats.mode.items() %}
+                <li class="list-group-item"><strong>{{ key }}:</strong> {{ value }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h3>Standard Deviation</h3>
+            <ul class="list-group">
+                {% for key, value in stats.std_dev.items() %}
+                <li class="list-group-item"><strong>{{ key }}:</strong> {{ value }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-12">
+            <h3>Correlation</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        {% for column in stats.correlation %}
+                        <th scope="col">{{ column }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, value in stats.correlation.items() %}
+                    <tr>
+                        <th scope="row">{{ key }}</th>
+                        {% for subkey, subvalue in value.items() %}
+                        <td>{{ subvalue }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2>Generate Plot</h2>
+    <form action="/plot" method="post">
+        <div class="form-group">
+            <label for="plot_type">Select Plot Type:</label>
+            <select class="form-control" id="plot_type" name="plot_type">
+                <option value="histogram">Histogram</option>
+                <option value="scatter">Scatter Plot</option>
+                <option value="line">Line Plot</option>
+                <option value="box">Box Plot</option>
+                <option value="bar">Bar Plot</option>
+                <option value="pie">Pie Chart</option>
+                <option value="area">Area Plot</option>
+                <option value="hexbin">Hexbin Plot</option>
+                <option value="density">Density Plot</option>
+                <option value="violin">Violin Plot</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="columns">Select Columns (comma separated for multiple columns):</label>
+            <input type="text" class="form-control" id="columns" name="columns" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Generate Plot</button>
+    </form>
+    <button onclick="location.href='/'" class="btn btn-primary">Back to Home</button>
+
+    {% if plot_url %}
+    <h2>Generated Plot</h2>
+    <img src="{{ plot_url }}" alt="Generated Plot" class="img-responsive">
+    {% endif %}
+</div>
+</body>
+</html>

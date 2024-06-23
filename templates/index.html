@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+</head>
+<body class="index-page">
+    <div class="container">
+        <h1>Welcome To Analytical Prompting</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Upload</button>
+        </form>
+        {% if uploaded_file %}
+            <p>Recently uploaded file: <strong>{{ uploaded_file }}</strong></p>
+        {% endif %}
+        <a href="/show_data"><button>Show Data</button></a>
+        <a href="/dimensions"><button>Show Dimensions</button></a>
+        <a href="/statistics"><button>Show Statistics</button></a>
+        <form action="/question" method="post">
+            <input type="text" name="question" placeholder="Ask a question about the data">
+            <button type="submit">Get Answer</button>
+        </form>
+    </div>
+</body>
+</html>
